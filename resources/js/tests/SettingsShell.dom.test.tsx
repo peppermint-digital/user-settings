@@ -16,12 +16,17 @@ vi.mock('@inertiajs/react', () => ({
     Link: ({
         href,
         children,
+        prefetch,
         ...rest
     }: {
         href: string | { url: string };
         children: ReactNode;
+        prefetch?: boolean;
     }) => (
-        <a href={typeof href === 'string' ? href : href.url} {...rest}>
+        // `prefetch` landet absichtlich als `data-`-Attribut und nicht
+        // durchgereicht: Ein unbekanntes Attribut auf einem `<a>` wuerde React
+        // nur eine Warnung entlocken, und pruefen laesst es sich so besser.
+        <a href={typeof href === 'string' ? href : href.url} data-prefetch={String(prefetch)} {...rest}>
             {children}
         </a>
     ),
@@ -114,6 +119,35 @@ describe('SettingsShell', () => {
 
         expect(screen.getByRole('heading', { name: 'Mein Konto' })).toBeTruthy();
         expect(screen.getByText('Profil und Zugang')).toBeTruthy();
+    });
+
+    /**
+     * CRM und Verwaltung hatten `prefetch` an ihren Eintraegen, AI Brain und
+     * Manager nicht. Waere es hier die Vorgabe, haetten zwei Produkte beim
+     * Umzug stillschweigend ein anderes Ladeverhalten bekommen.
+     */
+    it('holt die Zielseiten per Vorgabe NICHT vorab', () => {
+        render(
+            <SettingsShell items={EINTRAEGE}>
+                <p>x</p>
+            </SettingsShell>,
+        );
+
+        expect(
+            screen.getAllByRole('link').every((a) => a.getAttribute('data-prefetch') === 'false'),
+        ).toBe(true);
+    });
+
+    it('holt sie vorab, wenn das Produkt es verlangt', () => {
+        render(
+            <SettingsShell items={EINTRAEGE} prefetch>
+                <p>x</p>
+            </SettingsShell>,
+        );
+
+        expect(
+            screen.getAllByRole('link').every((a) => a.getAttribute('data-prefetch') === 'true'),
+        ).toBe(true);
     });
 
     /**

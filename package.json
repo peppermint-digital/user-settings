@@ -1,6 +1,6 @@
 {
     "name": "@peppermint-digital/user-settings",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Die Schale der Nutzer-Einstellungen: eine Top-Bar statt einer zweiten Sidebar, in jedem Produkt dieselbe. Das Produkt liefert die Worte und die Adressen.",
     "license": "MIT",
     "type": "module",

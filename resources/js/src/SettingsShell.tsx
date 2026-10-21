@@ -54,6 +54,21 @@ export interface SettingsShellProps {
     currentPath?: string;
     /** Breite des Inhalts. Vorgabe passt fuer Formularseiten. */
     contentClassName?: string;
+    /**
+     * Die Zielseiten beim Darueberfahren schon holen.
+     *
+     * Vorgabe AUS, und das ist bewusst keine Geschmacksfrage: CRM und
+     * Verwaltung hatten `prefetch` an ihren Eintraegen, AI Brain und Manager
+     * nicht. Waere das Holen hier die Vorgabe, haetten zwei Produkte beim
+     * Umzug auf diese Schale stillschweigend ein anderes Ladeverhalten
+     * bekommen — eine Aenderung, die niemand bestellt hat und die man erst
+     * am Netzwerkverkehr merkt.
+     *
+     * Wer es will, schaltet es ein. Siehe auch das Prinzip dahinter: Beim
+     * Heben einer Funktion ins Paket wird jede Sonderbehandlung einzeln
+     * entschieden, nicht weggelassen, weil kein Test rot wird.
+     */
+    prefetch?: boolean;
     children: ReactNode;
     className?: string;
 }
@@ -64,6 +79,7 @@ export function SettingsShell({
     description,
     currentPath,
     contentClassName,
+    prefetch = false,
     children,
     className,
 }: SettingsShellProps) {
@@ -105,6 +121,7 @@ export function SettingsShell({
                             <Link
                                 key={`${typeof ziel === 'string' ? ziel : ziel.url}-${index}`}
                                 href={ziel}
+                                prefetch={prefetch}
                                 aria-current={aktiv ? 'page' : undefined}
                                 className={cn(
                                     'inline-flex shrink-0 items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition-colors',

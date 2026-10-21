@@ -85,3 +85,15 @@ npm run build
 `react`, `react-dom` und `@inertiajs/react` sind Peer-Abhängigkeiten und bleiben beim
 Produkt — zwei React- oder zwei Inertia-Instanzen im selben Baum enden in „Invalid hook
 call" bzw. einem leeren Seitenzustand, und das findet niemand schnell.
+
+## prefetch
+
+Vorgabe **aus**. Beim Umzug der vier Produkte auf diese Schale hatten CRM und
+Verwaltung `prefetch` an ihren Einträgen, AI Brain und Manager nicht. Wäre das
+Vorabholen hier die Vorgabe, hätten zwei Produkte stillschweigend ein anderes
+Ladeverhalten bekommen — eine Änderung, die niemand bestellt hat und die man erst am
+Netzwerkverkehr merkt. Wer es will, schaltet es ein:
+
+```tsx
+<SettingsShell items={eintraege} prefetch>
+```
