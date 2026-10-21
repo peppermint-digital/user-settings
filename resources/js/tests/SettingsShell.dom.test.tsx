@@ -151,6 +151,36 @@ describe('SettingsShell', () => {
     });
 
     /**
+     * Die Enge der alten Layouts (`max-w-xl` in `md:max-w-2xl`) stammte aus
+     * der Zeit mit Seitenspalte und schnitt breite Inhalte ab. Festgeschrieben,
+     * damit sie beim naechsten Umbau nicht zurueckkehrt.
+     */
+    it('gibt dem Inhalt die volle Breite', () => {
+        render(
+            <SettingsShell items={EINTRAEGE}>
+                <p>Inhalt</p>
+            </SettingsShell>,
+        );
+
+        const rahmen = screen.getByText('Inhalt').parentElement;
+
+        expect(rahmen?.className).not.toMatch(/\bmax-w-/);
+        // `min-w-0`, sonst weigert sich ein Flex-/Grid-Kind zu schrumpfen und
+        // schiebt den Inhalt aus dem Rahmen — dasselbe Abschneiden.
+        expect(rahmen?.className).toContain('min-w-0');
+    });
+
+    it('laesst ein Produkt die Breite doch begrenzen', () => {
+        render(
+            <SettingsShell items={EINTRAEGE} contentClassName="max-w-xl">
+                <p>Inhalt</p>
+            </SettingsShell>,
+        );
+
+        expect(screen.getByText('Inhalt').parentElement?.className).toContain('max-w-xl');
+    });
+
+    /**
      * Ein Produkt, das alle Eintraege wegfiltert (keine Berechtigung), darf
      * keine leere Leiste mit Trennlinie hinterlassen.
      */

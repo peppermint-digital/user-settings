@@ -97,3 +97,21 @@ Netzwerkverkehr merkt. Wer es will, schaltet es ein:
 ```tsx
 <SettingsShell items={eintraege} prefetch>
 ```
+
+## Breite
+
+Der Inhalt läuft auf **voller Breite**. Die alten Layouts steckten ihn in `max-w-xl`
+innerhalb von `md:max-w-2xl` — eine Enge aus der Zeit, in der links noch eine
+Seitenspalte stand. Mit der Leiste oben ist sie nur im Weg: Breite Dinge wie die
+Benachrichtigungs-Matrix wurden links und rechts abgeschnitten, und die übrigen Seiten
+der Produkte laufen ohnehin auf voller Breite.
+
+Dazu `min-w-0` — der Teil, den man leicht vergisst. Ohne ihn weigert sich ein Flex- oder
+Grid-Kind zu schrumpfen und schiebt den Inhalt aus dem Rahmen, also genau das
+Abschneiden, das weg soll.
+
+Wer eine einzelne Seite doch schmal will:
+
+```tsx
+<SettingsShell items={eintraege} contentClassName="max-w-xl">
+```

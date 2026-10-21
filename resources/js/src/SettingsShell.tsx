@@ -139,7 +139,24 @@ export function SettingsShell({
                 </nav>
             )}
 
-            <div className={cn('mt-6 max-w-3xl space-y-12', contentClassName)}>{children}</div>
+            {/*
+             * Volle Breite, und `min-w-0` dazu.
+             *
+             * Die alten Layouts steckten den Inhalt in `max-w-xl` innerhalb
+             * von `md:max-w-2xl` — eine Enge, die aus der Zeit stammt, in der
+             * links noch eine Seitenspalte stand. Mit der Leiste oben ist sie
+             * nur noch im Weg: Breite Dinge wie die Benachrichtigungs-Matrix
+             * wurden links und rechts abgeschnitten, und die uebrigen Seiten
+             * der Produkte laufen ohnehin auf voller Breite.
+             *
+             * `min-w-0` ist der Teil, den man leicht vergisst: Ohne ihn
+             * weigert sich ein Flex- oder Grid-Kind zu schrumpfen und schiebt
+             * stattdessen den Inhalt aus dem Rahmen — genau das Abschneiden,
+             * das weg soll.
+             *
+             * Wer eine Seite doch schmal will, setzt `contentClassName`.
+             */}
+            <div className={cn('mt-6 min-w-0 space-y-12', contentClassName)}>{children}</div>
         </div>
     );
 }
